@@ -1,5 +1,6 @@
 import speech_recognition as sr
 import pyttsx3
+from playsound import playsound
 
 iniciar = sr.Recognizer()
 voz = pyttsx3.init()
@@ -48,6 +49,7 @@ while(1):
     texto = reconhecer_Voz()
     output_text_Arquivo(texto)
     if texto == "R2 encerrar":
+        playsound("Voicy_R2-D2 - 8.mp3")
         break
     
     print('AUDIO COMPREENDIDO')
