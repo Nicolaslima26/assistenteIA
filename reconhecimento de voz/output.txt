@@ -10,6 +10,7 @@ teste
 teste
 teste
 Deus de novo
+<<<<<<< HEAD
 testando 1 2 3
 testando 123 só que
 que mais combina com os psico
@@ -149,3 +150,13 @@ testando testando
 testando testando
 só coisa a voz
 pronto
+=======
+não tá público já já
+eu não consigo fazer bem É só tu
+trabalhar com hospeda
+João
+34
+porra para tracionar a gente não foi
+Amanhã a gente vai ter que aceitar
+documentação que não tem
+>>>>>>> f1df941d70c87bf27a25f9943867c95de46da317

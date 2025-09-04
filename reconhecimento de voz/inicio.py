@@ -44,7 +44,7 @@ def output_text_Arquivo(texto):
 while(1):
     texto = reconhecer_Voz()
     output_text_Arquivo(texto)
-    if texto == "R2 morrer":
+    if texto == "R2 morre":
         falar('encerrando o sistema')
         break
     print('AUDIO COMPREENDIDO')
