@@ -1,20 +1,20 @@
 import speech_recognition as sr
-import pyttsx3
+import gTTS
+import os
+import playsound
 
 iniciar = sr.Recognizer()
 voz = pyttsx3.init()
 voz.setProperty('rate', 125) 
 voz.setProperty('volume', 1) 
 
-voices = voz.getProperty('voices')
-for v in voices:
-    if "portuguese" in v.name.lower():
-        voz.setProperty('voice', v.id)
-        break
 
 def falar(texto):
-    voz.say(texto, name='teste')
-    voz.runAndWait()
+    tts = gTTS(text=texto, lang="pt-br")
+    filename = "resposta.mp3"
+    tts.save(filename)
+    playsound.playsound(filename)
+    os.remove(filename)  
     
 def reconhecer_Voz():
     while(1):
@@ -47,9 +47,11 @@ def output_text_Arquivo(texto):
 while(1):
     texto = reconhecer_Voz()
     output_text_Arquivo(texto)
-    if texto == "R2 encerrar":
+    if texto == "R2 morrer":
+        falar('encerrando o sistema')
+        
         break
-    
     print('AUDIO COMPREENDIDO')
     if texto == "teste":
         print('ola Nicolas tudo bem ?')
+    falar(texto)
