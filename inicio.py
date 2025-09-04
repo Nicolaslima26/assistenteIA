@@ -48,7 +48,7 @@ def output_text_Arquivo(texto):
 while(1):
     texto = reconhecer_Voz()
     output_text_Arquivo(texto)
-    if texto == "R2 encerrar":
+    if texto == "encerrar":
         playsound("Voicy_R2-D2 - 8.mp3")
         break
     
