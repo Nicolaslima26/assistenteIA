@@ -1,12 +1,9 @@
 import speech_recognition as sr
-import gTTS
+from gtts import gTTS
 import os
 import playsound
 
 iniciar = sr.Recognizer()
-voz = pyttsx3.init()
-voz.setProperty('rate', 125) 
-voz.setProperty('volume', 1) 
 
 
 def falar(texto):
@@ -20,7 +17,7 @@ def reconhecer_Voz():
     while(1):
         try:
             with sr.Microphone() as source2:
-                iniciar.adjust_for_ambient_noise(source2, duration= 0.8)
+                iniciar.adjust_for_ambient_noise(source2, duration= 0.2)
                 print('reconhecendo...')
                 
                 audio2 = iniciar.listen(source2)
@@ -49,9 +46,9 @@ while(1):
     output_text_Arquivo(texto)
     if texto == "R2 morrer":
         falar('encerrando o sistema')
-        
         break
     print('AUDIO COMPREENDIDO')
-    if texto == "teste":
-        print('ola Nicolas tudo bem ?')
+    
+    if texto == "r2":
+        falar('ola, tudo bem o que deseja?')
     falar(texto)
