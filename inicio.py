@@ -13,7 +13,7 @@ def falar(texto):
     playsound.playsound(filename)
     os.remove(filename)  
     
-def reconhecer_Voz():
+def  reconhecer_Voz():
     while(1):
         try:
             with sr.Microphone() as source2:
@@ -23,8 +23,9 @@ def reconhecer_Voz():
                 audio2 = iniciar.listen(source2)
                 
                 texto = iniciar.recognize_google(audio2, language= "pt-BR")
+                texto2 = str(texto)
                 
-                return texto
+                return texto2
                 
         except sr.RequestError as erro:
             print(f'erro na leitura de voz {format(erro)}')
@@ -39,7 +40,6 @@ def output_text_Arquivo(texto):
     f.write(texto)
     f.write('\n')
     f.close()
-    
     return
 while(1):
     texto = reconhecer_Voz()
@@ -52,3 +52,4 @@ while(1):
     if texto == "r2":
         falar('ola, tudo bem o que deseja?')
     falar(texto)
+
