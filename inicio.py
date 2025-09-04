@@ -23,6 +23,7 @@ def reconhecer_Voz():
             with sr.Microphone() as source2:
                 iniciar.adjust_for_ambient_noise(source2, duration= 0.8)
                 print('reconhecendo...')
+                playsound("Voicy_R2-D2 - 17.mp3")
                 
                 audio2 = iniciar.listen(source2)
                 
@@ -31,9 +32,11 @@ def reconhecer_Voz():
                 return texto
                 
         except sr.RequestError as erro:
+            playsound("Voicy_R2-D2 - 19.mp3")
             print(f'erro na leitura de voz {format(erro)}')
             
         except sr.UnknownValueError:
+            playsound("Voicy_R2-D2 - 10.mp3")
             print('tendi NADA')
             
     return
