@@ -2,12 +2,26 @@ import speech_recognition as sr
 import pyttsx3
 
 iniciar = sr.Recognizer()
+voz = pyttsx3.init()
+voz.setProperty('rate', 125) 
+voz.setProperty('volume', 1) 
 
+voices = voz.getProperty('voices')
+for v in voices:
+    if "portuguese" in v.name.lower():
+        voz.setProperty('voice', v.id)
+        break
+
+def falar(texto):
+    voz.say(texto, name='teste')
+    voz.runAndWait()
+    
 def reconhecer_Voz():
     while(1):
         try:
             with sr.Microphone() as source2:
-                iniciar.adjust_for_ambient_noise(source2, duration= 0.2)
+                iniciar.adjust_for_ambient_noise(source2, duration= 0.8)
+                print('reconhecendo...')
                 
                 audio2 = iniciar.listen(source2)
                 
@@ -24,7 +38,7 @@ def reconhecer_Voz():
     return
 
 def output_text_Arquivo(texto):
-    f = open('output.txt', 'a')
+    f = open('output.txt', 'a', encoding='utf-8')
     f.write(texto)
     f.write('\n')
     f.close()
@@ -33,6 +47,8 @@ def output_text_Arquivo(texto):
 while(1):
     texto = reconhecer_Voz()
     output_text_Arquivo(texto)
+    if texto == "R2 encerrar":
+        break
     
     print('AUDIO COMPREENDIDO')
     if texto == "teste":
