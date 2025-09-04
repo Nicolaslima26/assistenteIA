@@ -11,7 +11,7 @@ def reconhecer_Voz():
                 
                 audio2 = iniciar.listen(source2)
                 
-                texto = iniciar.recognize_google(audio2)
+                texto = iniciar.recognize_google(audio2, language= "pt-BR")
                 
                 return texto
                 
@@ -19,6 +19,21 @@ def reconhecer_Voz():
             print(f'erro na leitura de voz {format(erro)}')
             
         except sr.UnknownValueError:
-            print('tendi porra nenhuma')
+            print('tendi NADA')
             
     return
+
+def output_text_Arquivo(texto):
+    f = open('output.txt', 'a')
+    f.write(texto)
+    f.write('\n')
+    f.close()
+    
+    return
+while(1):
+    texto = reconhecer_Voz()
+    output_text_Arquivo(texto)
+    
+    print('AUDIO COMPREENDIDO')
+    if texto == "teste":
+        print('ola Nicolas tudo bem ?')
