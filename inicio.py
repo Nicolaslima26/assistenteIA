@@ -2,6 +2,7 @@ import speech_recognition as sr
 from gtts import gTTS
 import os
 import playsound
+import time
 
 iniciar = sr.Recognizer()
 
@@ -14,26 +15,21 @@ def falar(texto):
     os.remove(filename)  
     
 def  reconhecer_Voz():
-    while(1):
+    r = sr.Recognizer()
+    while True:
         try:
-            with sr.Microphone() as source2:
-                iniciar.adjust_for_ambient_noise(source2, duration= 0.2)
+            with sr.Microphone() as source:
+                r.adjust_for_ambient_noise(source, duration=0.2)
                 print('reconhecendo...')
-                
-                audio2 = iniciar.listen(source2)
-                
-                texto = iniciar.recognize_google(audio2, language= "pt-BR")
-                texto2 = str(texto)
-                
-                return texto2
-                
-        except sr.RequestError as erro:
-            print(f'erro na leitura de voz {format(erro)}')
-            
+                audio = r.listen(source)
+            texto = r.recognize_google(audio, language="pt-BR")
+            return texto
+        except sr.RequestError as e:
+            print(f'erro na leitura de voz: {e}')
+            return ""
         except sr.UnknownValueError:
-            print('tendi NADA')
-            
-    return
+            print('não entendi — fale novamente')
+            # continua o loop para tentar de novo
 
 def output_text_Arquivo(texto):
     f = open('output.txt', 'a', encoding='utf-8')
@@ -41,15 +37,17 @@ def output_text_Arquivo(texto):
     f.write('\n')
     f.close()
     return
-while(1):
-    texto = reconhecer_Voz()
-    output_text_Arquivo(texto)
-    if texto == "R2 morre":
-        falar('encerrando o sistema')
-        break
-    print('AUDIO COMPREENDIDO')
-    
-    if texto == "r2":
-        falar('ola, tudo bem o que deseja?')
-    falar(texto)
 
+if __name__ == "__main__":
+    while(1):
+        texto = reconhecer_Voz()
+        output_text_Arquivo(texto)
+        if texto == "R2 morre":
+            falar('encerrando o sistema')
+            break
+        print('AUDIO COMPREENDIDO')
+        
+        if texto == "R2" or texto == "r2":
+            falar('ola, tudo bem o que deseja?')
+        else:
+            falar(texto)
