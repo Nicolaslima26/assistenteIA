@@ -76,6 +76,7 @@ reconhecendo
 reconhecendo
 R2 encerrar
 R2 encerrar
+<<<<<<< HEAD
 Oi
 letra b r
 Célia fala sobre dança
@@ -101,3 +102,42 @@ Olá
 ele vai me responder entendeu
 morre
 R2 morre
+=======
+reconhecendo
+R2 encer
+R2 encer
+R2
+encerrar
+encer
+encerrar
+encerrar
+encerrar
+encerrar
+menos
+porra
+coisa que enfim
+embaixo não dá para adormecer ao mesmo tempo no código principal não ma
+preciso tomar
+encerrar
+pesquisa de algum
+pesquisar
+João Vitor vem cá deixa tocando aqui
+uma voz
+40
+pessoas próximas páginas pronto beleza onde é que tá me mostrando aqui quando fala alguma coisa que ele vai me dar o resultado dessa salada
+então se eu for pegar ela
+jogo importante será que vai ajeitar a mãe de vocês
+Voice
+R2
+Jô Soares
+para chega chega chega
+encerrar
+88
+show L2 B2
+encerrar
+Oi
+falou encerrar encerrar
+o Lucas ele está integrando esses áudio
+se eu botar aqui oi encerrar falar oi da frase eles a resposta que ele quer aí o João Vitor ele tá
+encerrar
+>>>>>>> e50ba1261f2ea256dc13d27463fa69330c798188
