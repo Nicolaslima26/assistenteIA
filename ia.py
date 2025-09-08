@@ -1,6 +1,13 @@
 import difflib
 import datetime
+import speech_recognition as sr
+from gtts import gTTS
+import os
+import playsound
+from inicio import reconhecer_Voz
+import time
 
+print('iniciarrrr')
 # respostas
 respostas = {
     "oi": "Bip bop! Sou seu R2-B2 seu assistente pessoal",
@@ -8,6 +15,14 @@ respostas = {
     "qual sua missão": "Minha missão é ajudar você, mestre Jedi",
     "tchau": "Boop bip! Até logo, que a Força esteja com você!"
 }
+
+def falar(texto):
+    tts = gTTS(text=texto, lang="pt-br")
+    filename = "resposta.mp3"
+    tts.save(filename)
+    playsound.playsound(filename)
+    os.remove(filename)  
+    
 
 def assistente(pergunta):
     pergunta = pergunta.lower().strip()
@@ -37,14 +52,20 @@ def assistente(pergunta):
         except:
             return "Erro ao calcular... bip "
 
-    # caso n tenha nenhuma outra mensagem
-    return "Bip... não entendi, mestre Jedi. Pode repetir?"
+    return "Bip... ainda não tenho resposta para isso."
 
-# Loop de teste
 print("Assistente ativado")
 while True:
-    user = input("Você: ")
-    if user.lower() in ["sair", "exit", "quit"]:
+    pergunta = reconhecer_Voz()
+    if not pergunta:
+        continue
+    print("Você disse:", pergunta)
+
+    if pergunta.lower() in ["sair", "exit", "quit"]:
         print("Droide: Desligando... ")
         break
-    print("Droide:", assistente(user))
+    
+    resposta = assistente(pergunta)
+    print("Droide:", resposta)       
+    falar(resposta)
+    time.sleep(1)
