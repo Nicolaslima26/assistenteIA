@@ -4,7 +4,7 @@ import speech_recognition as sr
 from gtts import gTTS
 import os
 import playsound
-from inicio import reconhecer_Voz
+from prototipo1.inicio import reconhecer_Voz
 import time
 
 print('iniciarrrr')

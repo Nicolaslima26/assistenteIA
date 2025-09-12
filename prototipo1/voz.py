@@ -11,7 +11,7 @@ torch.serialization.add_safe_globals([XttsConfig, XttsAudioConfig])
 tts = TTS(model_name="tts_models/multilingual/multi-dataset/xtts_v2", progress_bar=False)
 
 texto = (
-    "Bip bop! Sou seu R2-B2, seu assistente pessoal. "
+    "Roda, roda e vira, solta a roda e ve Me passaram a mão na bunda e ainda não comi ninguém Roda, roda e vira, solta a roda e vem Neste raio de suruba já me passaram a mão na bunda E ainda não comi ninguém"
     "Minha missão é ajudar você, mestre Jedi."
 )
 
