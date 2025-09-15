@@ -1,22 +1,60 @@
+import random
 import speech_recognition as sr
 import subprocess
 import os
 import tempfile
 import time
 from datetime import datetime
+import requests
 
 # CONFIGURAÇÃO AJUSTADA - usando plug e taxa correta
-AUDIO_DEVICE = "plughw:2,0"  # Usando plug para melhor compatibilidade
+AUDIO_DEVICE = "plughw:2,0" # Usando plug para melhor compatibilidade
+TROC_URL = "https://gist.githubusercontent.com/henrycunh/75abcf44146d5d9c0714932a386dbbf1/raw/558b97a002d578998720d76458641d4782c97d34/trocadilhos.json"
+
+def obter_trocadilho():
+    """Obter trocadilho aleatório do banco online"""
+    try:
+        resp = requests.get(TROC_URL)
+        resp.raise_for_status()
+        trocadilhos = resp.json()
+        escolhido = random.choice(trocadilhos)
+        return escolhido["pergunta"], escolhido["resposta"]
+    except Exception as e:
+        print(f"❌ Erro ao buscar trocadilho: {e}")
+        return None, None
 
 class VoiceAssistant:
-    def __init__(self):
+    def __init__(self, volume=50):
         self.recognizer = sr.Recognizer()
-        self.wake_word = "assistente"
+        self.wake_word = "r2"
+        self.volume = volume
 
     def speak(self, text):
         """Falar texto usando eSpeak"""
         print(f"🤖 Assistente: {text}")
-        os.system(f'espeak -v pt "{text}" 2>/dev/null')
+        os.system(f'espeak -v pt -s 120 -a {self.volume} "{text}" 2>/dev/null')
+    def calculate(self, command):
+        """Tentar calcular uma expressão simples a partir do comando de voz"""
+        try:
+            # Substituir palavras por operadores
+            command = command.replace("mais", "+").replace("menos", "-")
+            command = command.replace("vezes", "*").replace("multiplicado", "*")
+            command = command.replace("dividido", "/").replace("dividido", "/")
+
+            # Extrair apenas números e operadores
+            allowed_chars = "0123456789+-*/.() "
+            expression = "".join(c for c in command if c in allowed_chars)
+
+            if expression:
+                result = eval(expression)
+                self.speak(f"O resultado é {result}")
+                return True
+            else:
+                return False
+        except Exception as e:
+            print(f"❌ Erro no cálculo: {e}")
+            self.speak("Desculpe, não consegui calcular isso")
+            return False
 
     def record_audio(self, filename, duration=5):
         """Gravar áudio com taxa de amostragem correta (44100Hz)"""
@@ -73,14 +111,15 @@ class VoiceAssistant:
             # Limpar arquivo temporário
             if os.path.exists(audio_file):
                 os.remove(audio_file)
+    
 
     def listen_for_wake_word(self):
         """Ouvir continuamente até detectar a wake word"""
         print(f"🔊 Aguardando: '{self.wake_word}'...")
-        print("💡 Dica: Fale claramente 'ASSISTENTE'")
+        print("💡 Dica: Fale claramente 'R2'")
 
         attempts = 0
-        while attempts < 10:  # Limitar tentativas para não ficar eternamente
+        while attempts < 100:  # Limitar tentativas para não ficar eternamente
             command = self.listen()
             if command and self.wake_word in command:
                 self.speak("Sim senhor! Estou aqui!")
@@ -96,8 +135,12 @@ class VoiceAssistant:
         if not command:
             self.speak("Não consegui entender, pode repetir?")
             return
-
         print(f"⚡ Comando recebido: {command}")
+        
+        # Tentar calcular se detectar palavras de operação
+        if any(op in command for op in ["+", "-", "*", "/", "mais", "menos", "vezes", "dividido"]):
+            if self.calculate(command):
+                return
 
         # COMANDOS DE HORA E DATA
         if "hora" in command:
@@ -105,7 +148,6 @@ class VoiceAssistant:
             self.speak(f"Agora são {now}")
 
         elif "data" in command or "dia" in command:
-            from datetime import datetime
             hoje = datetime.now()
             dia = hoje.day
             mes = hoje.strftime("%B")
@@ -127,8 +169,14 @@ class VoiceAssistant:
 
         # COMANDOS DE INFORMAÇÃO
         elif "nome" in command:
-            self.speak("Meu nome é Assistente Virtual")
-
+            self.speak("Meu nome é R2-D2 seu assistente pessoal")
+        elif "joão" in command:
+            self.speak("joão é um cara muito legal e inteligente trabalha no I F C E")
+        elif "igor" in command:
+            self.speak("igor é um ótimo chefe e gente boa")
+        elif "criadores" in command or "criador" in command:
+            self.speak('fui criado por Igor, Nicolas, João Vitor, e um Lucas ')
+        
         elif "como você está" in command:
             self.speak("Estou ótimo! Pronto para ajudar")
 
@@ -137,12 +185,24 @@ class VoiceAssistant:
 
         # COMANDOS DE CONTROLE
         elif "parar" in command or "sair" in command or "chega" in command:
-            self.speak("Até logo! Estou desligando")
+            self.speak("Até logo!")
+            os.system(f"mpg123 -f {int(self.volume/60*32768)} ~/Desktop/voice_assistant/desligando.mp3")
             exit()
 
         elif "silêncio" in command:
             self.speak("Entendido, ficarei quietinho")
             time.sleep(3)
+            
+        # TROCADILHOS
+        elif "piada" in command or "trocadilho" in command:
+            pergunta, resposta = obter_trocadilho()
+            if pergunta and resposta:
+                self.speak(pergunta)
+                time.sleep(2)  # Pausa para dar suspense
+                self.speak(resposta)
+            else:
+                self.speak("Desculpe, não consegui buscar uma piada agora")
+        
 
         # RESPOSTA PADRÃO
         else:
@@ -151,16 +211,16 @@ class VoiceAssistant:
 
     def run(self):
         """Executar o assistente principal"""
+        os.system(f"mpg123 -f {int(self.volume/60*32768)} ~/Desktop/voice_assistant/ligando.mp3")
         self.speak("Sistema de voz inicializado com sucesso")
         self.speak("Microfone U S B configurado")
-        self.speak("Diga A S S I S T E N T E para começar")
+        self.speak("Diga R2 para começar")
 
         while True:
             print("\n" + "="*50)
             if self.listen_for_wake_word():
 
                 # Ouvir comando principal
-                self.speak("Sim! Em que posso ajudar?")
                 command = self.listen()
 
                 # Processar comando
